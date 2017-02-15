@@ -1,0 +1,13 @@
+
+[influxdb]
+addr        = "http://localhost:8086"
+username    = "root"
+password    = "root"
+database    = "rdbms_import"
+measurement = "movements"
+precision   = "ms"
+
+[postgresql]
+driver     = "postgres"
+source     = "postgres://postgres:password@localhost/dbname?sslmode=disable"
+query      = "select user, unit, source, target, time from movement where to_char(time,'YYYYMMDDHH24MISS') > '%s' order by time limit 100000"
