@@ -6,6 +6,8 @@ import (
 	"log"
 	"time"
 
+	"flag"
+
 	"github.com/influxdata/influxdb/client/v2"
 	_ "github.com/lib/pq"
 	"github.com/spf13/viper"
@@ -23,7 +25,10 @@ func main() {
 	var postgresSource string
 	var postgresQuery string
 
-	viper.SetConfigName("app")
+	configFilename := flag.String("config", "app", "Config Filename")
+	flag.Parse()
+
+	viper.SetConfigName(*configFilename)
 	viper.AddConfigPath(".")
 
 	err := viper.ReadInConfig()
