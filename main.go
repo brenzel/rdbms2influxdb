@@ -24,6 +24,7 @@ func main() {
 	var postgresDriver string
 	var postgresSource string
 	var postgresQuery string
+	var startDate string
 
 	configFilename := flag.String("config", "app", "Config Filename")
 	flag.Parse()
@@ -45,6 +46,11 @@ func main() {
 		postgresDriver = viper.GetString("postgresql.driver")
 		postgresSource = viper.GetString("postgresql.source")
 		postgresQuery = viper.GetString("postgresql.query")
+
+		startDate = viper.GetString("postgresql.start_date")
+		if startDate == "" {
+			startDate = "20010101010101"
+		}
 	}
 
 	httpClient, err := client.NewHTTPClient(client.HTTPConfig{
@@ -68,7 +74,7 @@ func main() {
 		return
 	}
 
-	lastDate := "20010101010101"
+	lastDate := startDate
 	if len((response.Results[0].Series)) > 0 {
 		t, err := time.Parse(time.RFC3339, response.Results[0].Series[0].Values[0][0].(string))
 		if err != nil {
